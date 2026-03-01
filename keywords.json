@@ -1,0 +1,29 @@
+{
+  "greeting": {
+    "only_answer": true,
+    "answer": [
+      "Greetings, {user_nickname}!",
+      "Welcome back, {user_nickname}.",
+      "I am glad to assist you, {user_nickname}."
+    ]
+  },
+  "kill": {
+    "ask": ["Good bye", "Bye", "Exit", "Quit"],
+    "answer": [
+      "Good bye, {user_nickname}.",
+      "Have a great day, {user_nickname}."
+    ]
+  },
+  "sleep_mode_on": {
+    "ask": ["Good Night", "Sleep mode"],
+    "answer": ["Going to sleep...", "Good night..."]
+  },
+  "sleep_mode_off": {
+    "ask": ["Wake Up"],
+    "answer": [
+      "Greetings, {user_nickname}!",
+      "Welcome back, {user_nickname}.",
+      "I am glad to assist you, {user_nickname}."
+    ]
+  }
+}

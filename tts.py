@@ -4,6 +4,15 @@ import asyncio
 import os
 
 
+def playsound(path):
+    pg.mixer.music.load(path)
+    pg.mixer.music.play()
+    audio_clock = pg.time.Clock()
+    while pg.mixer.music.get_busy():
+        audio_clock.tick(10)
+    pg.mixer.music.unload()
+
+
 class TTS:
     def __init__(
         self,
@@ -12,7 +21,7 @@ class TTS:
             "rate": "+20%",
             "volume": "+10%",
             "pitch": "+0Hz",
-        }
+        },
     ) -> None:
         pg.mixer.init()
         self.voice = voice_config
@@ -20,7 +29,7 @@ class TTS:
     async def _async_speak(
         self,
         text: str,
-        output: str = "speech.mp3",
+        output: str,
     ) -> None:
         communicate = edge_tts.Communicate(
             text,
@@ -31,18 +40,12 @@ class TTS:
         )
         await communicate.save(output)  # Generate audio file
 
-        pg.mixer.music.load(output)
-        pg.mixer.music.play()
-        audio_clock = pg.time.Clock()
-        while pg.mixer.music.get_busy():
-            audio_clock.tick(10)
-        pg.mixer.music.unload()  # Playing audio file
-
+        playsound(output)  # Playing audio file
 
     def speak(
         self,
         text: str,
-        output: str = "speech.mp3",
+        output: str = "_temp_.mp3",
         save_audio=False,
     ):
         """
@@ -50,7 +53,7 @@ class TTS:
         Args:
         - ``text``: text that will be spoken. \n
         - ``output``: name of file that will be generated, if you need to save generated file. \n
-        - ``save_audio``: put **True** if you want to save that speech. 
+        - ``save_audio``: put **True** if you want to save that speech.
 
         """
         asyncio.run(self._async_speak(text, output))
@@ -59,8 +62,14 @@ class TTS:
 
 
 if __name__ == "__main__":
-    text = input() or "Greetings, sir!"
-    file = "data/assets/audio/_temp_speech.mp3"
+    from logic import Config
 
-    v = TTS()
-    v.speak(text, file)
+    C = Config()
+    V = TTS()
+
+    for key in C.keywords.keys():
+        os.makedirs(f"data/sfx/{key}/", exist_ok=True)
+        for i, phrase in enumerate(C.keywords[key]["answer"]):
+            file = f"data/sfx/{key}/{i}.mp3"
+            if not os.path.exists(file):
+                V.speak(str(phrase).format(**C.config), output=file, save_audio=True)

@@ -1,0 +1,17 @@
+{
+  "name": "Nova",
+  "user_nickname": "Sir",
+  "sleep": false,
+  "active": true,
+  "voice": {
+    "voice": "en-US-GuyNeural",
+    "rate": "+20%",
+    "volume": "+100%",
+    "pitch": "+0Hz"
+  },
+  "recognizer_config": {
+    "energy_threshold": 150,
+    "dynamic_energy_threshold": true,
+    "adjust_for_ambient_noise_duration": 1.5
+  }
+}

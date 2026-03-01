@@ -8,9 +8,9 @@ class STT:
             "energy_threshold": 300,
             "dynamic_energy_threshold": True,
             "adjust_for_ambient_noise_duration": 1,
-        }
+        },
     ) -> None:
-        self.congig = recognizer_config
+        self.config = recognizer_config
 
     def recognize_speech(self, func):
         """
@@ -23,11 +23,15 @@ class STT:
         def decorator():
             r = sr.Recognizer()
 
-            r.energy_threshold = self.congig.get("energy_threshold", 300)
-            r.dynamic_energy_threshold = self.congig.get("dynamic_energy_threshold", True)
+            r.energy_threshold = self.config.get("energy_threshold", 300)
+            r.dynamic_energy_threshold = self.config.get(
+                "dynamic_energy_threshold", True
+            )
 
             with sr.Microphone() as source:
-                r.adjust_for_ambient_noise(source, self.congig.get("adjust_for_ambient_noise_duration", 1))
+                r.adjust_for_ambient_noise(
+                    source, self.config.get("adjust_for_ambient_noise_duration", 1)
+                )
                 while True:
                     try:
                         status = func(r, source)
@@ -39,6 +43,8 @@ class STT:
                     except sr.UnknownValueError:
                         pass
                     #     print("Could not understand audio")
+                    except sr.WaitTimeoutError:
+                        pass
                     except KeyboardInterrupt:
                         print("Program terminated by user.")
                         break
@@ -57,7 +63,7 @@ if __name__ == "__main__":
 
         # recognizer.adjust_for_ambient_noise(source, duration=0.2)
         audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
-        text = recognizer.recognize_google(audio) # type: ignore
+        text = recognizer.recognize_google(audio)  # type: ignore
         text = text.lower()
         print("You said:", text)
 
@@ -66,5 +72,3 @@ if __name__ == "__main__":
             status = -1
 
         return status
-
-    

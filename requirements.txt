@@ -1,1 +1,2 @@
-﻿
+﻿edge_tts
+pygame

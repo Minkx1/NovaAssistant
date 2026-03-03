@@ -1,6 +1,6 @@
 {
   "greeting": {
-    "only_answer": true,
+    "ask": ["Hello", "Hi", "Wassup", "Whats Up"],
     "answer": [
       "Greetings, {user_nickname}!",
       "Welcome back, {user_nickname}.",

@@ -1,2 +1,13 @@
-﻿edge_tts
+﻿# tts
+edge_tts
 pygame
+
+# stt
+speech_recognition
+
+# logic
+rich
+rapidfuzz
+
+# additional modules
+keyboard
